@@ -83,3 +83,7 @@ BONUS_LOCATIONS = {
     (8, 15): Color.TW,
     (1, 8): Color.TW,
 }
+
+# interextralight inter intermedium interregular intersemibold interthin interblack interextrabold
+pygame.font.init()
+BONUS_FONT = pygame.font.SysFont("interextrabold", 15)

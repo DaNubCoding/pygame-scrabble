@@ -16,6 +16,7 @@ class Color(Enum):
     TL = (12, 103, 156)
     DW = (228, 162, 163)
     TW = (191, 78, 78)
+    AXIS_TEXT = (145, 145, 165)
 
 BONUS_LOCATIONS = {
     (4, 1): Color.DL,
@@ -87,3 +88,4 @@ BONUS_LOCATIONS = {
 # interextralight inter intermedium interregular intersemibold interthin interblack interextrabold
 pygame.font.init()
 BONUS_FONT = pygame.font.SysFont("interextrabold", 15)
+AXIS_FONT = pygame.font.SysFont("intersemibold", 11)

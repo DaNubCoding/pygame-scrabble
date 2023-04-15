@@ -33,9 +33,8 @@ class GameManager:
         running = True
 
         while running:
-            self.update()
-
             try:
+                self.update()
                 self.scene.update()
                 self.scene.draw()
             except AbortScene:

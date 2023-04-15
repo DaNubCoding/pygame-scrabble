@@ -45,7 +45,8 @@ class GameManager:
 
             pygame.display.flip()
 
-        self.quit()
+        pygame.quit()
+        sys.exit()
 
     def update(self) -> None:
         self.dt = self.clock.tick_busy_loop(FPS) * 0.001
@@ -55,19 +56,15 @@ class GameManager:
             self.dt = 0
             self.window_changing = False
 
-        pygame.display.set_caption(f"Pygame | FPS: {round(self.clock.get_fps())}")
-        
+        pygame.display.set_caption(f"Pygame Scrabble | FPS: {round(self.clock.get_fps())}")
+
         self.events = {event.type: event for event in pygame.event.get()}
 
         if QUIT in self.events:
-            self.quit()
+            raise AbortGame
         if WINDOWRESIZED in self.events or WINDOWMOVED in self.events:
             self.window_changing = True
             self.dt = 0
-
-    def quit(self) -> None:
-        pygame.quit()
-        sys.exit()
 
     def new_scene(self, scene_class: str) -> None:
         self.scene = self.Scenes[scene_class].value(self, self.scene)

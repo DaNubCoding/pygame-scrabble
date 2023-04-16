@@ -49,28 +49,28 @@ class MainGame(Scene):
 
         self.options_container = Container(self, (VEC(self.rack_container.rect.topleft) + (0, 120), VEC(self.rack_container.rect.size) - (0, 40)))
 
-        self.options_container.add_children(ele := Button1(self, (0, 0, "25% - 11p", "100%"), lambda: print("resign")))
+        self.options_container.add_children(ele := Button1(self, (0, 0, "(100% - 15p * 3) / 4", "100%"), lambda: print("resign")))
         ele.setup(
             **rack_button_style,
             text = "Resign",
             border_radius = 9,
         )
 
-        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "25% - 11p", "100%"), lambda: print("skip")))
+        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("skip")))
         ele.setup(
             **rack_button_style,
             text = "Skip",
             border_radius = 9,
         )
 
-        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "25% - 11p", "100%"), lambda: print("swap")))
+        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("swap")))
         ele.setup(
             **rack_button_style,
             text = "Swap",
             border_radius = 9,
         )
 
-        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "25% - 11p", "100%"), lambda: print("submit")))
+        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("submit")))
         ele.setup(
             text = "Submit",
             font = OPTIONS_BUTTON_FONT,

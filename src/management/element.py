@@ -4,6 +4,7 @@ if TYPE_CHECKING:
     from src.game.elements.container import Container
 
 from typing import Optional
+from math import ceil
 import pygame
 
 from src.management.sprite import Sprite, Layers
@@ -41,30 +42,17 @@ class Element(Sprite):
                 self.rect.append(value)
                 continue
 
-            self.rect.append(0)
-            substr = ""
-            operator = 1
-            for ch in value.replace(" ", ""):
-                if ch == "$":
-                    try:
-                        self.rect[i] += operator * (self.parent.children[-1].rect[i])
-                        if i < 2:
-                            self.rect[i] += self.parent.children[-1].rect[i + 2]
-                            self.rect[i] -= operator * self.parent.rect[i]
-                    except IndexError:
-                        pass
-                elif ch == "%":
-                    self.rect[i] += operator * self.parent.rect[i] * int(substr) / 100
-                elif ch == "p":
-                    self.rect[i] += operator * int(substr)
-                elif ch == "+":
-                    operator = 1
-                elif ch == "-":
-                    operator = -1
-                else:
-                    substr += ch
-                    continue
-                substr = ""
+            value = value.replace("p", "")
+            try:
+                value = value.replace("$", f"$ + {self.parent.children[-1].rect[i]}")
+                if i < 2:
+                    value = value.replace("$", f"$ + {self.parent.children[-1].rect[i + 2]}")
+                    value = value.replace("$", f"-{self.parent.rect[i]}")
+            except IndexError:
+                pass
+            value = value.replace("$", "")
+            value = value.replace("%", f" * {self.parent.rect[i]} / 100")
+            self.rect.append(ceil(eval(value)))
 
         # Ellipses represent a value equal to the value of the other dimension counterpart
         for i in range(4):

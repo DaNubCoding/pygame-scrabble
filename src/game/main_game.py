@@ -9,9 +9,10 @@ from src.game.board import Board
 class MainGame(Scene):
     def setup(self) -> None:
         super().setup()
+
         self.board = Board(self)
 
-        rack_button_style = Style(
+        self.rack_button_style = Style(
             idle_color = Color.RACK_BUTTON_IDLE.value,
             hover_color = Color.RACK_BUTTON_HOVER.value,
             click_color = Color.RACK_BUTTON_CLICK.value,
@@ -19,56 +20,62 @@ class MainGame(Scene):
             font = OPTIONS_BUTTON_FONT,
         )
 
-        self.rack_container = Container(self, (40, 780, (TILE_SIZE + TILE_MARGIN) * 15 - TILE_MARGIN, 105))
-        self.rack_container.setup(
+        self.__build_rack_container()
+        self.__build_options_container()
+
+    def __build_rack_container(self) -> None:
+        cont = Container(self, (40, 780, (TILE_SIZE + TILE_MARGIN) * 15 - TILE_MARGIN, 105))
+        cont.setup(
             bg_color = (255, 255, 255),
             border_radius = 12,
         )
 
-        self.rack_container.add_children(ele := Button1(self, (15, 15, ..., "100% - 30p"), lambda: print("shuffle")))
+        cont.add_children(ele := Button1(self, (15, 15, ..., "100% - 30p"), lambda: print("shuffle")))
         ele.setup(
-            **rack_button_style,
+            **self.rack_button_style,
             image = images.shuffle,
             border_radius = 12,
         )
 
-        self.rack_container.add_children(ele := Container(self, ("$ + 15p", 15, "100% - $ - $ - 30p - 30p", "100% - 30p")))
-        ele.setup(
+        self.rack = Container(self, ("$ + 15p", 15, "100% - $ - $ - 30p - 30p", "100% - 30p"))
+        self.rack.setup(
             bg_color = Color.BG.value,
             border_radius = 12,
         )
+        cont.add_children(self.rack)
 
-        self.rack_container.add_children(ele := Button1(self, ("$ + 15p", 15, ..., "100% - 30p"), lambda: print("reset")))
+        cont.add_children(ele := Button1(self, ("$ + 15p", 15, ..., "100% - 30p"), lambda: print("reset")))
         ele.setup(
-            **rack_button_style,
+            **self.rack_button_style,
             image = images.reset,
             border_radius = 12,
         )
 
-        self.options_container = Container(self, (VEC(self.rack_container.rect.topleft) + (0, 120), VEC(self.rack_container.rect.size) - (0, 40)))
+    def __build_options_container(self) -> None:
+        cont = Container(self, (VEC(cont.rect.topleft) + (0, 120), VEC(cont.rect.size) - (0, 40)))
 
-        self.options_container.add_children(ele := Button1(self, (0, 0, "(100% - 15p * 3) / 4", "100%"), lambda: print("resign")))
+        cont.add_children(ele := Button1(self, (0, 0, "(100% - 15p * 3) / 4", "100%"), lambda: print("resign")))
         ele.setup(
-            **rack_button_style,
+            **self.rack_button_style,
             text = "Resign",
             border_radius = 9,
         )
 
-        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("skip")))
+        cont.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("skip")))
         ele.setup(
-            **rack_button_style,
+            **self.rack_button_style,
             text = "Skip",
             border_radius = 9,
         )
 
-        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("swap")))
+        cont.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("swap")))
         ele.setup(
-            **rack_button_style,
+            **self.rack_button_style,
             text = "Swap",
             border_radius = 9,
         )
 
-        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("submit")))
+        cont.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("submit")))
         ele.setup(
             text = "Submit",
             font = OPTIONS_BUTTON_FONT,

@@ -17,7 +17,9 @@ class Color(Enum):
     DW = (228, 162, 163)
     TW = (191, 78, 78)
     AXIS_TEXT = (145, 145, 165)
-    RACK_BUTTON = (244, 244, 250)
+    RACK_BUTTON_IDLE = (244, 244, 250)
+    RACK_BUTTON_HOVER = (230, 230, 241)
+    RACK_BUTTON_CLICK = (210, 210, 220)
 
 BONUS_LOCATIONS = {
     (4, 1): Color.DL,

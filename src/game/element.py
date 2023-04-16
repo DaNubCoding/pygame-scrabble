@@ -7,7 +7,7 @@ from typing import Optional
 import pygame
 
 from src.management.sprite import Sprite, Layers
-from src.common.constants import Color
+from src.common.constants import VEC, Color
 from src.management.scene import Scene
 
 class Element(Sprite):
@@ -17,7 +17,7 @@ class Element(Sprite):
         try:
             self.rect = pygame.Rect(rect)
         except TypeError:
-            self.rect = rect
+            self.rect = list(rect)
 
         self.bg_color = Color.BG.value
         self.fg_color = (255, 255, 255)
@@ -42,9 +42,10 @@ class Element(Sprite):
             for ch in value.replace(" ", ""):
                 if ch == "$":
                     try:
-                        self.rect[i] += operator * self.parent.children[-1].rect[i]
+                        self.rect[i] += operator * (self.parent.children[-1].rect[i])
                         if i < 2:
                             self.rect[i] += self.parent.children[-1].rect[i + 2]
+                            self.rect[i] -= operator * self.parent.rect[i]
                     except IndexError:
                         pass
                 elif ch == "%":
@@ -65,4 +66,5 @@ class Element(Sprite):
             if self.rect[i] != ...: continue
             self.rect[i] = self.rect[i + (-1 if i & 1 else 1)]
 
-        self.rect = pygame.Rect(self.rect)
+        self.rect = pygame.Rect(VEC(self.rect[:2]) + (self.parent.rect.topleft if self.parent else (0, 0)), self.rect[2:])
+        # self.rect = pygame.Rect(self.rect)

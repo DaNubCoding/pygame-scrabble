@@ -3,7 +3,7 @@ from enum import Enum
 import pygame
 import sys
 
-from src.common.constants import FPS, SIZE
+from src.common.constants import VEC, FPS, SIZE
 from src.game.main_game import MainGame
 from src.management.scene import Scene
 
@@ -58,6 +58,8 @@ class GameManager:
         pygame.display.set_caption(f"Pygame Scrabble | FPS: {round(self.clock.get_fps())}")
 
         self.events = {event.type: event for event in pygame.event.get()}
+        self.mouse_state = pygame.mouse.get_pressed()
+        self.mouse_pos = VEC(pygame.mouse.get_pos())
 
         if QUIT in self.events:
             raise AbortGame

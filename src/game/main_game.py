@@ -20,9 +20,9 @@ class MainGame(Scene):
 
         top = "100% - 30p"
 
-        self.rack_container.add_children(cont := Button1(self, (15, 15, ..., top), None))
+        self.rack_container.add_children(cont := Button1(self, (15, 15, ..., top), images.shuffle, lambda: print("shuffle")))
         cont.setup(
-            bg_color = Color.RACK_BUTTON.value,
+            bg_color = Color.RACK_BUTTON_IDLE.value,
             border_radius = 12,
         )
 
@@ -32,9 +32,9 @@ class MainGame(Scene):
             border_radius = 12,
         )
 
-        self.rack_container.add_children(cont := Button1(self, ("$ + 15p", 15, ..., top), None))
+        self.rack_container.add_children(cont := Button1(self, ("$ + 15p", 15, ..., top), images.reset, lambda: print("reset")))
         cont.setup(
-            bg_color = Color.RACK_BUTTON.value,
+            bg_color = Color.RACK_BUTTON_IDLE.value,
             border_radius = 12,
         )
 

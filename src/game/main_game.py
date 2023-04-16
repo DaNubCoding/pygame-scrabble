@@ -1,10 +1,10 @@
 from typing import Generator
 import pygame
 
-from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, BONUS_LOCATIONS, BONUS_FONT, AXIS_FONT
-from src.game.button import Button1, Button2
+from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, BONUS_LOCATIONS, BONUS_FONT, AXIS_FONT, OPTIONS_BUTTON_FONT
 from src.game.container import Container
 from src.management.scene import Scene
+from src.game.button import Button1
 import src.common.images as images
 
 class MainGame(Scene):
@@ -18,53 +18,69 @@ class MainGame(Scene):
             border_radius = 12,
         )
 
-        top = "100% - 30p"
-
-        self.rack_container.add_children(ele := Button1(self, (15, 15, ..., top), images.shuffle, lambda: print("shuffle")))
+        self.rack_container.add_children(ele := Button1(self, (15, 15, ..., "100% - 30p"), lambda: print("shuffle")))
         ele.setup(
-            bg_color = Color.RACK_BUTTON_IDLE.value,
+            image = images.shuffle,
+            idle_color = Color.RACK_BUTTON_IDLE.value,
+            hover_color = Color.RACK_BUTTON_HOVER.value,
+            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 12,
         )
 
-        self.rack_container.add_children(ele := Container(self, ("$ + 15p", 15, "100% - $ - $ - 30p - 30p", top)))
+        self.rack_container.add_children(ele := Container(self, ("$ + 15p", 15, "100% - $ - $ - 30p - 30p", "100% - 30p")))
         ele.setup(
             bg_color = Color.BG.value,
             border_radius = 12,
         )
 
-        self.rack_container.add_children(ele := Button1(self, ("$ + 15p", 15, ..., top), images.reset, lambda: print("reset")))
+        self.rack_container.add_children(ele := Button1(self, ("$ + 15p", 15, ..., "100% - 30p"), lambda: print("reset")))
         ele.setup(
-            bg_color = Color.RACK_BUTTON_IDLE.value,
+            image = images.reset,
+            idle_color = Color.RACK_BUTTON_IDLE.value,
+            hover_color = Color.RACK_BUTTON_HOVER.value,
+            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 12,
         )
 
         self.options_container = Container(self, (VEC(self.rack_container.rect.topleft) + (0, 120), VEC(self.rack_container.rect.size) - (0, 40)))
 
-        self.options_container.add_children(ele := Button2(self, (0, 0, "25% - 11p", "100%"), "Resign", lambda: print("resign")))
+        self.options_container.add_children(ele := Button1(self, (0, 0, "25% - 11p", "100%"), lambda: print("resign")))
         ele.setup(
-            bg_color = Color.RACK_BUTTON_IDLE.value,
+            text = "Resign",
             fg_color = (0, 0, 0),
+            idle_color = Color.RACK_BUTTON_IDLE.value,
+            hover_color = Color.RACK_BUTTON_HOVER.value,
+            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 9,
         )
 
-        self.options_container.add_children(ele := Button2(self, ("$ + 15p", 0, "25% - 11p", "100%"), "Skip", lambda: print("skip")))
+        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "25% - 11p", "100%"), lambda: print("skip")))
         ele.setup(
-            bg_color = Color.RACK_BUTTON_IDLE.value,
+            text = "Skip",
             fg_color = (0, 0, 0),
+            idle_color = Color.RACK_BUTTON_IDLE.value,
+            hover_color = Color.RACK_BUTTON_HOVER.value,
+            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 9,
         )
 
-        self.options_container.add_children(ele := Button2(self, ("$ + 15p", 0, "25% - 11p", "100%"), "Swap", lambda: print("swap")))
+        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "25% - 11p", "100%"), lambda: print("swap")))
         ele.setup(
-            bg_color = Color.RACK_BUTTON_IDLE.value,
+            text = "Swap",
             fg_color = (0, 0, 0),
+            idle_color = Color.RACK_BUTTON_IDLE.value,
+            hover_color = Color.RACK_BUTTON_HOVER.value,
+            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 9,
         )
 
-        self.options_container.add_children(ele := Button2(self, ("$ + 15p", 0, "25% - 11p", "100%"), "Submit", lambda: print("submit")))
+        self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "25% - 11p", "100%"), lambda: print("submit")))
         ele.setup(
-            bg_color = Color.SUBMIT_BUTTON_IDLE.value,
+            text = "Submit",
             fg_color = (255, 255, 255),
+            idle_color = Color.SUBMIT_BUTTON_IDLE.value,
+            hover_color = Color.SUBMIT_BUTTON_HOVER.value,
+            click_color = Color.SUBMIT_BUTTON_CLICK.value,
             border_radius = 9,
         )
 

@@ -2,7 +2,7 @@ from typing import Callable
 import pygame
 
 from src.common.constants import VEC, Color, OPTIONS_BUTTON_FONT
-from src.game.interactable import Interactable
+from src.game.elements.interactable import Interactable
 from src.management.scene import Scene
 
 class Button(Interactable):
@@ -37,6 +37,7 @@ class Button1(Button):
         super().__init__(scene, rect, command)
         self.image = None
         self.text = None
+        self.font = None
 
     def draw(self) -> None:
         pygame.draw.rect(self.manager.screen, (255, 255, 255), self.rect, 0, self.border_radius + 4)
@@ -45,5 +46,5 @@ class Button1(Button):
         if self.image:
             self.manager.screen.blit(self.image, (VEC(self.rect.topleft) + (VEC(self.rect.size) - self.image.get_size()) // 2))
         elif self.text:
-            text_surf = OPTIONS_BUTTON_FONT.render(self.text, True, self.fg_color)
+            text_surf = self.font.render(self.text, True, self.fg_color)
             self.manager.screen.blit(text_surf, VEC(self.rect.topleft) + (VEC(self.rect.size) - text_surf.get_size()) // 2)

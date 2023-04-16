@@ -95,4 +95,4 @@ BONUS_LOCATIONS = {
 pygame.font.init()
 BONUS_FONT = pygame.font.SysFont("interextrabold", 15)
 AXIS_FONT = pygame.font.SysFont("intersemibold", 11)
-OPTIONS_BUTTON_FONT = pygame.font.SysFont("intersemibold", 16)
+OPTIONS_BUTTON_FONT = pygame.font.SysFont("intersemibold", 18)

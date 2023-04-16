@@ -2,10 +2,10 @@ from typing import Generator
 import pygame
 
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, BONUS_LOCATIONS, BONUS_FONT, AXIS_FONT, OPTIONS_BUTTON_FONT
-from src.game.container import Container
+from src.game.elements.container import Container
+from src.game.elements.button import Button1
+from src.management.element import Style
 from src.management.scene import Scene
-from src.game.button import Button1
-from src.game.element import Style
 import src.common.images as images
 
 class MainGame(Scene):
@@ -17,6 +17,8 @@ class MainGame(Scene):
             idle_color = Color.RACK_BUTTON_IDLE.value,
             hover_color = Color.RACK_BUTTON_HOVER.value,
             click_color = Color.RACK_BUTTON_CLICK.value,
+            fg_color = (0, 0, 0),
+            font = OPTIONS_BUTTON_FONT,
         )
 
         self.rack_container = Container(self, (40, 780, (TILE_SIZE + TILE_MARGIN) * 15 - TILE_MARGIN, 105))
@@ -51,7 +53,6 @@ class MainGame(Scene):
         ele.setup(
             **rack_button_style,
             text = "Resign",
-            fg_color = (0, 0, 0),
             border_radius = 9,
         )
 
@@ -59,7 +60,6 @@ class MainGame(Scene):
         ele.setup(
             **rack_button_style,
             text = "Skip",
-            fg_color = (0, 0, 0),
             border_radius = 9,
         )
 
@@ -67,13 +67,13 @@ class MainGame(Scene):
         ele.setup(
             **rack_button_style,
             text = "Swap",
-            fg_color = (0, 0, 0),
             border_radius = 9,
         )
 
         self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "25% - 11p", "100%"), lambda: print("submit")))
         ele.setup(
             text = "Submit",
+            font = OPTIONS_BUTTON_FONT,
             fg_color = (255, 255, 255),
             idle_color = Color.SUBMIT_BUTTON_IDLE.value,
             hover_color = Color.SUBMIT_BUTTON_HOVER.value,

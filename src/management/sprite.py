@@ -7,7 +7,7 @@ from abc import ABC as AbstractClass
 from enum import Enum, auto
 
 class Layers(Enum):
-    DEFAULT = auto()
+    GUI = auto()
 
 class Sprite(AbstractClass):
     def __init__(self, scene: Scene, layer: int | Layers) -> None:

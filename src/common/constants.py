@@ -4,7 +4,7 @@ import pygame
 VEC = pygame.math.Vector2
 
 FPS = 60
-WIDTH, HEIGHT = SIZE = 800, 800
+WIDTH, HEIGHT = SIZE = 800, 1000
 HSIZE = (WIDTH // 2, HEIGHT // 2)
 TILE_SIZE = 44
 TILE_MARGIN = 4
@@ -17,6 +17,7 @@ class Color(Enum):
     DW = (228, 162, 163)
     TW = (191, 78, 78)
     AXIS_TEXT = (145, 145, 165)
+    RACK_BUTTON = (244, 244, 250)
 
 BONUS_LOCATIONS = {
     (4, 1): Color.DL,

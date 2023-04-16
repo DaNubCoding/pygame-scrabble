@@ -70,14 +70,6 @@ class MainGame(Scene):
             text_surf = AXIS_FONT.render(f"{i + 1: >2}", True, Color.AXIS_TEXT.value)
             self.manager.screen.blit(text_surf, (20, 56 + i * (TILE_SIZE + TILE_MARGIN)))
 
-    # right_rect = pygame.draw.rect(self.manager.screen, Color.RACK_BUTTON.value, (rect.right - 15 - (rect.height - 30), rect.top + 15, rect.height - 30, rect.height - 30), 0, 12)
-    # pygame.draw.rect(self.manager.screen, Color.RACK_BUTTON.value, (*(VEC(right_rect.topleft) - (5, 5)), right_rect.height + 10, right_rect.height + 10), 2, 16)
-
-    # rect = pygame.draw.rect(self.manager.screen, Color.RACK_BUTTON.value, (*(VEC(rect.topleft) + (15, 15)), rect.height - 30, rect.height - 30), 0, 12)
-    # pygame.draw.rect(self.manager.screen, Color.RACK_BUTTON.value, (*(VEC(rect.topleft) - (5, 5)), rect.height + 10, rect.height + 10), 2, 16)
-
-    # rect = pygame.draw.rect(self.manager.screen, Color.BG.value, (*(VEC(rect.topright) + (20, 0)), 497, rect.height), 0, 12)
-
     @property
     def board(self) -> Generator:
         for y, row in enumerate(self._board):

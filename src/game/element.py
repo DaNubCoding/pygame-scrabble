@@ -67,4 +67,3 @@ class Element(Sprite):
             self.rect[i] = self.rect[i + (-1 if i & 1 else 1)]
 
         self.rect = pygame.Rect(VEC(self.rect[:2]) + (self.parent.rect.topleft if self.parent else (0, 0)), self.rect[2:])
-        # self.rect = pygame.Rect(self.rect)

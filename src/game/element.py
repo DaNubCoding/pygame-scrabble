@@ -10,6 +10,11 @@ from src.management.sprite import Sprite, Layers
 from src.common.constants import VEC, Color
 from src.management.scene import Scene
 
+class Style(dict):
+    def __init__(self, **styles) -> None:
+        for name, value in styles.items():
+            self[name] = value
+
 class Element(Sprite):
     def __init__(self, scene: Scene, rect: tuple[float, float, float, float]) -> None:
         super().__init__(scene, Layers.GUI)

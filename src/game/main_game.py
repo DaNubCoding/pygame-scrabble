@@ -5,12 +5,19 @@ from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, BONUS_LOCAT
 from src.game.container import Container
 from src.management.scene import Scene
 from src.game.button import Button1
+from src.game.element import Style
 import src.common.images as images
 
 class MainGame(Scene):
     def setup(self) -> None:
         super().setup()
         self._board = [[None] * 15 for _ in range(15)]
+
+        rack_button_style = Style(
+            idle_color = Color.RACK_BUTTON_IDLE.value,
+            hover_color = Color.RACK_BUTTON_HOVER.value,
+            click_color = Color.RACK_BUTTON_CLICK.value,
+        )
 
         self.rack_container = Container(self, (40, 780, (TILE_SIZE + TILE_MARGIN) * 15 - TILE_MARGIN, 105))
         self.rack_container.setup(
@@ -20,10 +27,8 @@ class MainGame(Scene):
 
         self.rack_container.add_children(ele := Button1(self, (15, 15, ..., "100% - 30p"), lambda: print("shuffle")))
         ele.setup(
+            **rack_button_style,
             image = images.shuffle,
-            idle_color = Color.RACK_BUTTON_IDLE.value,
-            hover_color = Color.RACK_BUTTON_HOVER.value,
-            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 12,
         )
 
@@ -35,10 +40,8 @@ class MainGame(Scene):
 
         self.rack_container.add_children(ele := Button1(self, ("$ + 15p", 15, ..., "100% - 30p"), lambda: print("reset")))
         ele.setup(
+            **rack_button_style,
             image = images.reset,
-            idle_color = Color.RACK_BUTTON_IDLE.value,
-            hover_color = Color.RACK_BUTTON_HOVER.value,
-            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 12,
         )
 
@@ -46,31 +49,25 @@ class MainGame(Scene):
 
         self.options_container.add_children(ele := Button1(self, (0, 0, "25% - 11p", "100%"), lambda: print("resign")))
         ele.setup(
+            **rack_button_style,
             text = "Resign",
             fg_color = (0, 0, 0),
-            idle_color = Color.RACK_BUTTON_IDLE.value,
-            hover_color = Color.RACK_BUTTON_HOVER.value,
-            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 9,
         )
 
         self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "25% - 11p", "100%"), lambda: print("skip")))
         ele.setup(
+            **rack_button_style,
             text = "Skip",
             fg_color = (0, 0, 0),
-            idle_color = Color.RACK_BUTTON_IDLE.value,
-            hover_color = Color.RACK_BUTTON_HOVER.value,
-            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 9,
         )
 
         self.options_container.add_children(ele := Button1(self, ("$ + 15p", 0, "25% - 11p", "100%"), lambda: print("swap")))
         ele.setup(
+            **rack_button_style,
             text = "Swap",
             fg_color = (0, 0, 0),
-            idle_color = Color.RACK_BUTTON_IDLE.value,
-            hover_color = Color.RACK_BUTTON_HOVER.value,
-            click_color = Color.RACK_BUTTON_CLICK.value,
             border_radius = 9,
         )
 

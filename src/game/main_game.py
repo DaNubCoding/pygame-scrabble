@@ -51,7 +51,7 @@ class MainGame(Scene):
         )
         self.rack_cont.add_children(self.rack)
 
-        self.rack_cont.add_children(ele := Button1(self, ("$ + 15p", 15, ..., "100% - 30p"), lambda: print("reset")))
+        self.rack_cont.add_children(ele := Button1(self, ("$ + 15p", 15, ..., "100% - 30p"), self.reset))
         ele.setup(
             **self.rack_button_style,
             image = images.reset,
@@ -95,8 +95,16 @@ class MainGame(Scene):
 
     def shuffle(self) -> None:
         children = self.rack.children[1:]
-        self.rack.children = [self.rack.children[0]]
         shuffle(children)
+        self.__rack_redo_children(children)
+
+    def reset(self) -> None:
+        children = self.rack.children[1:]
+        children.sort(key=lambda child: child.text)
+        self.__rack_redo_children(children)
+
+    def __rack_redo_children(self, children: list[RackTile]) -> None:
+        self.rack.children = [self.rack.children[0]]
         for child in children:
             self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), child.text))
 

@@ -1,7 +1,7 @@
 from random import randint, shuffle
 
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUTTON_FONT
-from src.game.elements.container import Container, Spacer
+from src.management.container import Container, Spacer
 from src.game.elements.rack_tile import RackTile
 from src.game.elements.button import Button1
 from src.management.element import Style

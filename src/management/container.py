@@ -1,8 +1,7 @@
 import pygame
 
-from src.management.scene import Scene
-from src.common.constants import VEC
 from src.management.element import Element
+from src.management.scene import Scene
 
 class Container(Element):
     def __init__(self, scene: Scene, rect: tuple[float, float, float, float]) -> None:

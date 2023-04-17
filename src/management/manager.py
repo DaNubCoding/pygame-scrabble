@@ -21,6 +21,7 @@ class GameManager:
 
         self.flags = DOUBLEBUF | SCALED
         self.screen = pygame.display.set_mode(SIZE, self.flags)
+        pygame.mouse.set_cursor(*pygame.cursors.diamond)
         self.clock = pygame.time.Clock()
         self.dt = self.clock.tick_busy_loop(FPS) * 0.05
         self.window_changing = False

@@ -17,6 +17,7 @@ class Interactable(Element):
                     self.click_flag = True
                 self.__handle_hover()
         else:
+            self.idle()
             if not self.hover_flag:
                 self.off_hover()
                 self.hover_flag = True
@@ -58,4 +59,8 @@ class Interactable(Element):
 
     def clicking(self) -> None:
         # Override: Called continuously when the cursor is clicking the area
+        pass
+
+    def idle(self) -> None:
+        # Override: Called continuously when the cursor is not in the area
         pass

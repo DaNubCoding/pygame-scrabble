@@ -17,6 +17,8 @@ class RackTile(Interactable):
         self.font = RACK_TILE_FONT
         self.border_radius = 9
 
+        self.scale = 1
+
     @cached_property
     def image(self) -> pygame.SurfaceType:
         image = pygame.Surface(self.rect.size, SRCALPHA)
@@ -33,4 +35,13 @@ class RackTile(Interactable):
         return image
 
     def draw(self) -> None:
-        self.manager.screen.blit(self.image, self.rect)
+        transformed = pygame.transform.scale_by(self.image, self.scale)
+        self.manager.screen.blit(transformed, VEC(self.rect.topleft) + (VEC(self.rect.size) - transformed.get_size()) // 2)
+
+    def hovering(self) -> None:
+        self.scale += 0.8 * self.manager.dt
+        self.scale = min(self.scale, 1.1)
+
+    def idle(self) -> None:
+        self.scale -= 0.8 * self.manager.dt
+        self.scale = max(self.scale, 1)

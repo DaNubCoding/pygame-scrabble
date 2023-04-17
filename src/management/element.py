@@ -26,7 +26,6 @@ class Element(Sprite):
             self.rect = list(rect)
 
         self.bg_color = Color.BG.value
-        self.fg_color = (255, 255, 255)
         self.border_radius = 0
 
     def setup(self, **styles) -> None:

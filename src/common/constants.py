@@ -23,6 +23,8 @@ class Color(Enum):
     SUBMIT_BUTTON_IDLE = (61, 182, 194)
     SUBMIT_BUTTON_HOVER = (98, 160, 170)
     SUBMIT_BUTTON_CLICK = (78, 140, 155)
+    RACK_TILE = (255, 218, 158)
+    RACK_TILE_EDGE = (229, 181, 104)
 
 BONUS_LOCATIONS = {
     (4, 1): Color.DL,
@@ -96,3 +98,4 @@ pygame.font.init()
 BONUS_FONT = pygame.font.SysFont("interextrabold", 15)
 AXIS_FONT = pygame.font.SysFont("intersemibold", 11)
 OPTIONS_BUTTON_FONT = pygame.font.SysFont("intersemibold", 18)
+RACK_TILE_FONT = pygame.font.SysFont("interextrabold", 35)

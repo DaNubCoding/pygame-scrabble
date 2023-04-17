@@ -12,9 +12,7 @@ class Button(Interactable):
 
     def setup(self, **kwargs) -> None:
         # Ensure default colors
-        self.idle_color = self.bg_color
-        self.hover_color = self.bg_color
-        self.click_color = self.bg_color
+        self.idle_color = self.hover_color = self.click_color = Color.BG.value
         super().setup(**kwargs)
         # Ensure an initial background color
         self.bg_color = self.idle_color

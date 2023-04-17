@@ -1,5 +1,6 @@
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUTTON_FONT
 from src.game.elements.container import Container
+from src.game.elements.rack_tile import RackTile
 from src.game.elements.button import Button1
 from src.management.element import Style
 from src.management.scene import Scene
@@ -21,16 +22,20 @@ class MainGame(Scene):
         )
 
         self.__build_rack_container()
+        self.rack.add_children(RackTile(self, (11, 10, ..., "100% - 20p"), "M"))
+        for _ in range(6):
+            self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), "C"))
+
         self.__build_options_container()
 
     def __build_rack_container(self) -> None:
-        cont = Container(self, (40, 780, (TILE_SIZE + TILE_MARGIN) * 15 - TILE_MARGIN, 105))
-        cont.setup(
+        self.rack_cont = Container(self, (40, 780, (TILE_SIZE + TILE_MARGIN) * 15 - TILE_MARGIN, 110))
+        self.rack_cont.setup(
             bg_color = (255, 255, 255),
             border_radius = 12,
         )
 
-        cont.add_children(ele := Button1(self, (15, 15, ..., "100% - 30p"), lambda: print("shuffle")))
+        self.rack_cont.add_children(ele := Button1(self, (15, 15, ..., "100% - 30p"), lambda: print("shuffle")))
         ele.setup(
             **self.rack_button_style,
             image = images.shuffle,
@@ -42,9 +47,9 @@ class MainGame(Scene):
             bg_color = Color.BG.value,
             border_radius = 12,
         )
-        cont.add_children(self.rack)
+        self.rack_cont.add_children(self.rack)
 
-        cont.add_children(ele := Button1(self, ("$ + 15p", 15, ..., "100% - 30p"), lambda: print("reset")))
+        self.rack_cont.add_children(ele := Button1(self, ("$ + 15p", 15, ..., "100% - 30p"), lambda: print("reset")))
         ele.setup(
             **self.rack_button_style,
             image = images.reset,
@@ -52,7 +57,7 @@ class MainGame(Scene):
         )
 
     def __build_options_container(self) -> None:
-        cont = Container(self, (VEC(cont.rect.topleft) + (0, 120), VEC(cont.rect.size) - (0, 40)))
+        cont = Container(self, (VEC(self.rack_cont.rect.topleft) + (0, 125), VEC(self.rack_cont.rect.size) - (0, 40)))
 
         cont.add_children(ele := Button1(self, (0, 0, "(100% - 15p * 3) / 4", "100%"), lambda: print("resign")))
         ele.setup(

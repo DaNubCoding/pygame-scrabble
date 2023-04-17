@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, shuffle
 
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUTTON_FONT
 from src.game.elements.container import Container, Spacer
@@ -37,7 +37,7 @@ class MainGame(Scene):
             border_radius = 12,
         )
 
-        self.rack_cont.add_children(ele := Button1(self, (15, 15, ..., "100% - 30p"), lambda: print("shuffle")))
+        self.rack_cont.add_children(ele := Button1(self, (15, 15, ..., "100% - 30p"), self.shuffle))
         ele.setup(
             **self.rack_button_style,
             image = images.shuffle,
@@ -92,6 +92,13 @@ class MainGame(Scene):
             click_color = Color.SUBMIT_BUTTON_CLICK.value,
             border_radius = 9,
         )
+
+    def shuffle(self) -> None:
+        children = self.rack.children[1:]
+        self.rack.children = [self.rack.children[0]]
+        shuffle(children)
+        for child in children:
+            self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), child.text))
 
     def update(self) -> None:
         super().update()

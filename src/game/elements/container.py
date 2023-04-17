@@ -17,3 +17,5 @@ class Container(Element):
             child.parent = self
             child.parse_rect()
             self.children.append(child)
+
+Spacer = Container

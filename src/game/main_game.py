@@ -1,5 +1,7 @@
+from random import randint
+
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUTTON_FONT
-from src.game.elements.container import Container
+from src.game.elements.container import Container, Spacer
 from src.game.elements.rack_tile import RackTile
 from src.game.elements.button import Button1
 from src.management.element import Style
@@ -22,9 +24,9 @@ class MainGame(Scene):
         )
 
         self.__build_rack_container()
-        self.rack.add_children(RackTile(self, (11, 10, ..., "100% - 20p"), "M"))
-        for _ in range(6):
-            self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), "C"))
+        self.rack.add_children(Spacer(self, (0, 0, 2, 0)))
+        for _ in range(7):
+            self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), chr(randint(65, 90))))
 
         self.__build_options_container()
 

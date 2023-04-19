@@ -20,10 +20,11 @@ class Element(Sprite):
     def __init__(self, scene: Scene, rect: tuple[float, float, float, float]) -> None:
         super().__init__(scene, Layers.GUI)
         self.parent: Optional[Container] = None
+        self.rect_settings = list(rect)
         try:
             self.rect = pygame.Rect(rect)
         except TypeError:
-            self.rect = list(rect)
+            pass
 
         self.bg_color = Color.BG.value
         self.border_radius = 0
@@ -33,22 +34,23 @@ class Element(Sprite):
             setattr(self, name, value)
 
     def parse_rect(self) -> None:
-        rect = self.rect
         self.rect = []
+        self.index = self.parent.children.index(self)
 
-        for i, value in enumerate(rect):
+        for i, value in enumerate(self.rect_settings):
             if not isinstance(value, str):
                 self.rect.append(value)
                 continue
 
             value = value.replace("p", "")
-            try:
-                value = value.replace("$", f"$ + {self.parent.children[-1].rect[i]}")
+
+            if self.index > 0:
+                prev_child = self.parent.children[self.index - 1]
+                value = value.replace("$", f"$ + {prev_child.rect[i]}")
                 if i < 2:
-                    value = value.replace("$", f"$ + {self.parent.children[-1].rect[i + 2]}")
+                    value = value.replace("$", f"$ + {prev_child.rect[i + 2]}")
                     value = value.replace("$", f"-{self.parent.rect[i]}")
-            except IndexError:
-                pass
+
             value = value.replace("$", "")
             value = value.replace("%", f" * {self.parent.rect[i]} / 100")
             self.rect.append(ceil(eval(value)))

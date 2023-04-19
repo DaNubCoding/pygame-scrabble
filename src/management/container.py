@@ -14,7 +14,7 @@ class Container(Element):
     def add_children(self, *children: tuple[Element]) -> None:
         for child in children:
             child.parent = self
-            child.parse_rect()
             self.children.append(child)
+            child.parse_rect()
 
 Spacer = Container

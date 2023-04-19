@@ -5,6 +5,7 @@ import pygame
 
 from src.common.constants import VEC, Color, RACK_TILE_FONT
 from src.game.elements.interactable import Interactable
+from src.game.held_tile import HeldTile
 from src.management.scene import Scene
 
 class RackTile(Interactable):
@@ -38,6 +39,10 @@ class RackTile(Interactable):
         transformed = pygame.transform.scale_by(self.image, self.scale)
         self.manager.screen.blit(transformed, VEC(self.rect.topleft) + (VEC(self.rect.size) - transformed.get_size()) // 2)
 
+    def on_click(self) -> None:
+        HeldTile(self.scene, self.rect.topleft, self)
+        self.hide()
+
     def hovering(self) -> None:
         self.scale += 0.8 * self.manager.dt
         self.scale = min(self.scale, 1.1)
@@ -45,3 +50,13 @@ class RackTile(Interactable):
     def idle(self) -> None:
         self.scale -= 0.8 * self.manager.dt
         self.scale = max(self.scale, 1)
+
+    def hide(self) -> None:
+        super().kill()
+
+    def kill(self) -> None:
+        self.parent.children.remove(self)
+        try:
+            super().kill()
+        except ValueError: # It has already been removed from the sprite manager via self.hide
+            pass

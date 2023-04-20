@@ -76,7 +76,6 @@ class Interactable(Element):
 
     def clicking(self) -> None:
         # Override: Called continuously when the cursor is clicking the area
-        print("clicking")
         pass
 
     def idle(self) -> None:

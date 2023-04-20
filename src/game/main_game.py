@@ -1,4 +1,4 @@
-from random import randint, shuffle
+from random import choice, shuffle
 
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUTTON_FONT
 from src.management.container import Container, Spacer
@@ -14,6 +14,7 @@ class MainGame(Scene):
         super().setup()
 
         self.board = Board(self)
+        self.tile_bag = ["E"] * 12 + ["A"] * 9 + ["I"] * 9 + ["O"] * 8 + ["N"] * 6 + ["R"] * 6 + ["T"] * 6 + ["L"] * 4 + ["S"] * 4 + ["U"] * 4 + ["D"] * 4 + ["G"] * 3 + ["B"] * 2 + ["C"] * 2 + ["M"] * 2 + ["P"] * 2 + ["F"] * 2 + ["H"] * 2 + ["V"] * 2 + ["W"] * 2 + ["Y"] * 2 + ["K", "J", "X", "Q", "Z"]
 
         self.rack_button_style = Style(
             idle_color = Color.RACK_BUTTON_IDLE.value,
@@ -26,7 +27,7 @@ class MainGame(Scene):
         self.__build_rack_container()
         self.rack.add_children(Spacer(self, (0, 0, 2, 0)))
         for _ in range(7):
-            self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), chr(randint(65, 90))))
+            self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), choice(self.tile_bag)))
 
         self.__build_options_container()
 

@@ -14,7 +14,7 @@ class MainGame(Scene):
         super().setup()
 
         self.board = Board(self)
-        self.tile_bag = ["E"] * 12 + ["A"] * 9 + ["I"] * 9 + ["O"] * 8 + ["N"] * 6 + ["R"] * 6 + ["T"] * 6 + ["L"] * 4 + ["S"] * 4 + ["U"] * 4 + ["D"] * 4 + ["G"] * 3 + ["B"] * 2 + ["C"] * 2 + ["M"] * 2 + ["P"] * 2 + ["F"] * 2 + ["H"] * 2 + ["V"] * 2 + ["W"] * 2 + ["Y"] * 2 + ["K", "J", "X", "Q", "Z"]
+        self.tile_bag = list("EEEEEEEEEEEEAAAAAAAAAIIIIIIIIIOOOOOOOONNNNNNRRRRRRTTTTTTLLLLSSSSUUUUDDDDGGGBBCCMMPPFFHHVVWWYYKJXQZ")
 
         self.rack_button_style = Style(
             idle_color = Color.RACK_BUTTON_IDLE.value,

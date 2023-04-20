@@ -96,16 +96,18 @@ class MainGame(Scene):
     def shuffle(self) -> None:
         children = self.rack.children[1:]
         shuffle(children)
-        self.__reorder_rack(children)
+        self.reorder_rack(children)
 
     def reset(self) -> None:
         children = self.rack.children[1:]
         children.sort(key=lambda child: child.text)
-        self.__reorder_rack(children)
+        self.reorder_rack(children)
 
-    def __reorder_rack(self, children: list[RackTile]) -> None:
-        self.rack.children = [self.rack.children[0]] + children
-        for child in children:
+    def reorder_rack(self, children: list[RackTile] = None) -> None:
+        if children:
+            self.rack.children = [self.rack.children[0]] + children
+
+        for child in self.rack.children:
             child.parse_rect()
 
     def update(self) -> None:

@@ -14,6 +14,10 @@ class Interactable(Element):
         self._hover = self.rect.collidepoint(self.manager.mouse_pos)
         self._click = self._hover and self.manager.mouse_state[0] and not self._clicked_outside
 
+        # If click is released inside interactable, _clicked_outside should be reset to allow another click
+        if self._hover and not self.manager.mouse_state[0]:
+            self._clicked_outside = False
+
         if self._hover:
             self.__handle_hover()
         else:

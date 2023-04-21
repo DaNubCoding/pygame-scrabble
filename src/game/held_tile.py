@@ -39,7 +39,7 @@ class HeldTile(Sprite):
             self.scene.reorder_rack()
 
         # Out of board
-        board_pos = ceilvec((self.manager.mouse_pos - self.scene.board.topleft) / (TILE_SIZE + TILE_MARGIN))
+        board_pos = ceilvec((self.manager.mouse_pos - self.scene.board.rect.topleft) / (TILE_SIZE + TILE_MARGIN))
         if not 1 <= board_pos.x <= 15 or not 1 <= board_pos.y <= 15:
             self.withdraw()
             return

@@ -4,13 +4,17 @@ from src.management.scene import Scene
 class Interactable(Element):
     def __init__(self, scene: Scene, rect: tuple[float, float, float, float]) -> None:
         super().__init__(scene, rect)
-        self.hover_flag = True
-        self.click_flag = True
+        self._hover_flag = True
+        self._click_flag = True
         self._hover = False
         self._click = False
         self._clicked_outside = False
 
+        self.locked = False
+
     def update(self) -> None:
+        if self.locked: return
+
         self._hover = self.rect.collidepoint(self.manager.mouse_pos)
         self._click = self._hover and self.manager.mouse_state[0] and not self._clicked_outside
 
@@ -31,29 +35,29 @@ class Interactable(Element):
     # When you manage to unnest everything (⌐▨_▨)
     def __handle_click(self) -> None:
         self.clicking()
-        if not self.click_flag: return
+        if not self._click_flag: return
         self.on_click()
-        self.click_flag = False
+        self._click_flag = False
 
     def __handle_hover(self) -> None:
         self.hovering()
-        if not self.hover_flag: return
+        if not self._hover_flag: return
         self.on_hover()
-        self.hover_flag = False
+        self._hover_flag = False
 
     def __handle_unhover(self) -> None:
         # This prevents the mouse being able to hold down click and drag over the interactable to activate it
         self._clicked_outside = self.manager.mouse_state[0]
         self.bg_color = getattr(self, "idle_color", self.bg_color)
 
-        if self.hover_flag: return
+        if self._hover_flag: return
         self.off_hover()
-        self.hover_flag = True
+        self._hover_flag = True
 
     def __handle_unclick(self) -> None:
-        if self.click_flag: return
+        if self._click_flag: return
         self.off_click()
-        self.click_flag = True
+        self._click_flag = True
 
     def on_hover(self) -> None:
         # Override: Called on the first frame the cursor enters the area

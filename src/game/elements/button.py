@@ -2,6 +2,7 @@ from typing import Callable, Any
 import pygame
 
 from src.game.elements.interactable import Interactable
+from src.game.elements.dropped_tile import DroppedTile
 from src.common.constants import VEC, Color
 from src.management.scene import Scene
 import src.common.images as images
@@ -32,7 +33,7 @@ class Button(Interactable):
         self.bg_color = self.hover_color
 
 class ButtonType1(Button):
-    """Used by all options buttons and the shuffle button"""
+    """Used by all options buttons and is superclass to ShuffleButton and ResetButton"""
     def __init__(self, scene: Scene, rect: tuple[float, float, float, float], command: Callable[..., None]) -> None:
         super().__init__(scene, rect, command)
         self.image = None
@@ -50,17 +51,29 @@ class ButtonType1(Button):
 
 class ResetButton(ButtonType1):
     """The reset/clear button"""
-    def __init__(self, scene: Scene, rect: tuple[float, float, float, float], command1: Callable[..., None], command2: Callable[..., None]) -> None:
-        super().__init__(scene, rect, command1)
-        self.command1 = command1
-        self.command2 = command2
+    def __init__(self, scene: Scene, rect: tuple[float, float, float, float]) -> None:
+        super().__init__(scene, rect, scene.reset)
         self.image = images.reset
         self.border_radius = 12
 
     def to_reset(self) -> None:
         self.image = images.reset
-        self.command = self.command1
+        self.command = self.scene.reset
 
     def to_clear(self) -> None:
         self.image = images.clear
-        self.command = self.command2
+        self.command = self.scene.clear
+
+class ShuffleButton(ButtonType1):
+    """The shuffle button"""
+    def __init__(self, scene: Scene, rect: tuple[float, float, float, float]) -> None:
+        super().__init__(scene, rect, scene.shuffle)
+        self.image = images.shuffle
+        self.border_radius = 12
+
+    def update(self) -> None:
+        self.locked = bool(DroppedTile._registry)
+        if self.locked:
+            self.bg_color = self.hover_color
+
+        super().update()

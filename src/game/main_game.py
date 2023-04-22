@@ -1,7 +1,7 @@
 from random import choice, shuffle
 
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUTTON_FONT
-from src.game.elements.button import ButtonType1, ResetButton
+from src.game.elements.button import ButtonType1, ShuffleButton, ResetButton
 from src.game.elements.container import Container, Spacer
 from src.game.elements.dropped_tile import DroppedTile
 from src.game.elements.rack_tile import RackTile
@@ -39,12 +39,9 @@ class MainGame(Scene):
             border_radius = 12,
         )
 
-        self.rack_cont.add_children(ele := ButtonType1(self, (15, 15, ..., "100% - 30p"), self.shuffle))
-        ele.setup(
-            **self.rack_button_style,
-            image = images.shuffle,
-            border_radius = 12,
-        )
+        self.shuffle_button = ShuffleButton(self, (15, 15, ..., "100% - 30p"))
+        self.shuffle_button.setup(**self.rack_button_style)
+        self.rack_cont.add_children(self.shuffle_button)
 
         self.rack = Container(self, ("$ + 15p", 15, "100% - $ - $ - 30p - 30p", "100% - 30p"))
         self.rack.setup(
@@ -53,7 +50,7 @@ class MainGame(Scene):
         )
         self.rack_cont.add_children(self.rack)
 
-        self.reset_button = ResetButton(self, ("$ + 15p", 15, ..., "100% - 30p"), self.reset, self.clear)
+        self.reset_button = ResetButton(self, ("$ + 15p", 15, ..., "100% - 30p"))
         self.reset_button.setup(**self.rack_button_style)
         self.rack_cont.add_children(self.reset_button)
 

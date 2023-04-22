@@ -2,14 +2,14 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from src.game.elements.rack_tile import RackTile
-    from src.game.dropped_tile import DroppedTile
+    from src.game.elements.dropped_tile import DroppedTile
 
 from math import ceil
 import pygame
 
 from src.common.constants import VEC, TILE_SIZE, TILE_MARGIN
 from src.management.sprite import Sprite, Layers
-from src.game.dropped_tile import DroppedTile
+from src.game.elements.dropped_tile import DroppedTile
 from src.management.scene import Scene
 from src.common.utils import ceilvec
 

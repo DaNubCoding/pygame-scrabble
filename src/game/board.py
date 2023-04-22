@@ -5,7 +5,7 @@ import pygame
 
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, BONUS_LOCATIONS, BONUS_FONT, AXIS_FONT, BOARD_SIZE, NUM_TILES
 from src.management.sprite import Sprite, Layers
-from src.management.container import Container
+from src.game.elements.container import Container
 from src.management.element import Element
 from src.management.scene import Scene
 from src.common.utils import inttup

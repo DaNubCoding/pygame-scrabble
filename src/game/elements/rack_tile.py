@@ -54,6 +54,9 @@ class RackTile(Interactable):
     def hide(self) -> None:
         super().kill()
 
+    def unhide(self) -> None:
+        self.scene.sprite_manager.add(self)
+
     def kill(self) -> None:
         self.parent.children.remove(self)
         try:

@@ -14,8 +14,12 @@ from src.game.elements.interactable import Interactable
 from src.management.scene import Scene
 
 class DroppedTile(Interactable):
+    _registry: list[DroppedTile] = []
+
     def __init__(self, scene: Scene, board_pos: tuple[int, int], pos: tuple[int, int], held_tile: HeldTile, rack_tile: RackTile) -> None:
+        self._registry.append(self)
         super().__init__(scene, (*pos, TILE_SIZE, TILE_SIZE))
+
         self.held_tile = held_tile
         self.rack_tile = rack_tile
         self.setup(
@@ -27,7 +31,9 @@ class DroppedTile(Interactable):
             font = DROPPED_TILE_FONT,
         )
         self.board_pos = board_pos
+
         self.scene.board.board[int(board_pos.y) - 1][int(board_pos.x) - 1] = self.text
+        self.scene.reset_button.to_clear()
 
     @cached_property
     def image(self) -> pygame.SurfaceType:
@@ -48,9 +54,12 @@ class DroppedTile(Interactable):
         self.manager.screen.blit(self.image, self.rect)
 
     def on_click(self) -> None:
-        self.scene.board[self.board_pos] = None
-
         self.held_tile.offset = self.manager.mouse_pos - self.rect.topleft
         self.held_tile.scale = 0.8
         self.held_tile.revive()
         self.kill()
+
+    def kill(self) -> None:
+        self.scene.board[self.board_pos] = None
+        self._registry.remove(self)
+        super().kill()

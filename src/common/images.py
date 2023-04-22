@@ -11,5 +11,6 @@ pygame.display.set_mode((1, 1), pygame.NOFRAME)
 star = load_image("star.png")
 shuffle = load_image("shuffle.png", scale=0.6)
 reset = load_image("reset.png", scale=0.7)
+clear = load_image("clear.png", scale=0.75)
 
 pygame.display.quit()

@@ -1,9 +1,10 @@
 from random import choice, shuffle
 
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUTTON_FONT
+from src.game.elements.button import ButtonType1, ResetButton
 from src.game.elements.container import Container, Spacer
+from src.game.elements.dropped_tile import DroppedTile
 from src.game.elements.rack_tile import RackTile
-from src.game.elements.button import Button1
 from src.management.element import Style
 from src.management.scene import Scene
 import src.common.images as images
@@ -38,7 +39,7 @@ class MainGame(Scene):
             border_radius = 12,
         )
 
-        self.rack_cont.add_children(ele := Button1(self, (15, 15, ..., "100% - 30p"), self.shuffle))
+        self.rack_cont.add_children(ele := ButtonType1(self, (15, 15, ..., "100% - 30p"), self.shuffle))
         ele.setup(
             **self.rack_button_style,
             image = images.shuffle,
@@ -52,38 +53,35 @@ class MainGame(Scene):
         )
         self.rack_cont.add_children(self.rack)
 
-        self.rack_cont.add_children(ele := Button1(self, ("$ + 15p", 15, ..., "100% - 30p"), self.reset))
-        ele.setup(
-            **self.rack_button_style,
-            image = images.reset,
-            border_radius = 12,
-        )
+        self.reset_button = ResetButton(self, ("$ + 15p", 15, ..., "100% - 30p"), self.reset, self.clear)
+        self.reset_button.setup(**self.rack_button_style)
+        self.rack_cont.add_children(self.reset_button)
 
     def __build_options_container(self) -> None:
         cont = Container(self, (VEC(self.rack_cont.rect.topleft) + (0, 125), VEC(self.rack_cont.rect.size) - (0, 40)))
 
-        cont.add_children(ele := Button1(self, (0, 0, "(100% - 15p * 3) / 4", "100%"), lambda: print("resign")))
+        cont.add_children(ele := ButtonType1(self, (0, 0, "(100% - 15p * 3) / 4", "100%"), lambda: print("resign")))
         ele.setup(
             **self.rack_button_style,
             text = "Resign",
             border_radius = 9,
         )
 
-        cont.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("skip")))
+        cont.add_children(ele := ButtonType1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("skip")))
         ele.setup(
             **self.rack_button_style,
             text = "Skip",
             border_radius = 9,
         )
 
-        cont.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("swap")))
+        cont.add_children(ele := ButtonType1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("swap")))
         ele.setup(
             **self.rack_button_style,
             text = "Swap",
             border_radius = 9,
         )
 
-        cont.add_children(ele := Button1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("submit")))
+        cont.add_children(ele := ButtonType1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("submit")))
         ele.setup(
             text = "Submit",
             font = OPTIONS_BUTTON_FONT,
@@ -103,6 +101,12 @@ class MainGame(Scene):
         children = self.rack.children[1:]
         children.sort(key=lambda child: child.text)
         self.reorder_rack(children)
+
+    def clear(self) -> None:
+        for dropped_tile in DroppedTile._registry.copy():
+            dropped_tile.rack_tile.unhide()
+            dropped_tile.kill()
+        self.reset_button.to_reset()
 
     def reorder_rack(self, children: list[RackTile] = None) -> None:
         if children:

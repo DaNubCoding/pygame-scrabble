@@ -44,6 +44,7 @@ class Interactable(Element):
     def __handle_unhover(self) -> None:
         # This prevents the mouse being able to hold down click and drag over the interactable to activate it
         self._clicked_outside = self.manager.mouse_state[0]
+        self.bg_color = getattr(self, "idle_color", self.bg_color)
 
         if self.hover_flag: return
         self.off_hover()

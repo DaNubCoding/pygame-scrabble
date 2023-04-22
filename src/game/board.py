@@ -14,7 +14,7 @@ import src.common.images as images
 class Board(Container):
     def __init__(self, scene: Scene) -> None:
         super().__init__(scene, (40, 40, BOARD_SIZE, BOARD_SIZE))
-        self._board = [[None] * NUM_TILES for _ in range(NUM_TILES)]
+        self.board = [[None] * NUM_TILES for _ in range(NUM_TILES)]
 
         for x in range(NUM_TILES):
             for y in range(NUM_TILES):

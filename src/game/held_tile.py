@@ -2,8 +2,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from src.game.elements.rack_tile import RackTile
+    from src.game.dropped_tile import DroppedTile
 
 from math import ceil
+import pygame
 
 from src.common.constants import VEC, TILE_SIZE, TILE_MARGIN
 from src.management.sprite import Sprite, Layers
@@ -16,6 +18,7 @@ class HeldTile(Sprite):
         super().__init__(scene, Layers.TILES)
         self.rack_tile = rack_tile
         self.image = self.rack_tile.image
+        self.scale = 1
         self.pos = VEC(pos)
         self.offset = self.manager.mouse_pos - self.pos
 
@@ -26,28 +29,30 @@ class HeldTile(Sprite):
             self.drop()
 
     def drop(self) -> None:
-        # On rack
-        children, rect, m_pos = self.scene.rack.children, self.scene.rack.rect, self.manager.mouse_pos
+        rect, m_pos = self.scene.rack.rect, self.manager.mouse_pos
         if rect.left < m_pos.x < rect.right and rect.top < m_pos.y < rect.bottom:
-            children.insert(children.index(self.rack_tile), None) # Insert placeholder
-            children.remove(self.rack_tile)
+            self.drop_on_rack()
 
-            tile_width = rect.width / 7
-            children.insert(ceil((m_pos.x - rect.left + tile_width // 2) / tile_width), self.rack_tile)
-            children.remove(None) # Remove placeholder
-
-            self.scene.reorder_rack()
-
-        # Out of board
-        board_pos = ceilvec((self.manager.mouse_pos - self.scene.board.rect.topleft) / (TILE_SIZE + TILE_MARGIN))
-        if not 1 <= board_pos.x <= 15 or not 1 <= board_pos.y <= 15:
+        self.board_pos = ceilvec((self.manager.mouse_pos - self.scene.board.rect.topleft) / (TILE_SIZE + TILE_MARGIN))
+        if not 1 <= self.board_pos.x <= 15 or not 1 <= self.board_pos.y <= 15:
             self.withdraw()
-            return
+        else:
+            self.drop_on_board()
 
-        # On board
-        pos = board_pos * (TILE_SIZE + TILE_MARGIN) - VEC(TILE_MARGIN, TILE_MARGIN) * 2
-        DroppedTile(self.scene, pos, self.rack_tile)
-        self.rack_tile.kill()
+    def drop_on_rack(self) -> None:
+        self.scene.rack.children.insert(self.scene.rack.children.index(self.rack_tile), None) # Insert placeholder
+        self.scene.rack.children.remove(self.rack_tile)
+
+        tile_width = self.scene.rack.rect.width / 7
+        index = ceil((self.manager.mouse_pos.x - self.scene.rack.rect.left + tile_width // 2) / tile_width)
+        self.scene.rack.children.insert(index, self.rack_tile)
+        self.scene.rack.children.remove(None) # Remove placeholder
+
+        self.scene.reorder_rack()
+
+    def drop_on_board(self) -> None:
+        pos = self.board_pos * (TILE_SIZE + TILE_MARGIN) - VEC(TILE_MARGIN, TILE_MARGIN) * 2
+        DroppedTile(self.scene, self.board_pos, pos, self, self.rack_tile)
         self.kill()
 
     def withdraw(self) -> None:
@@ -55,4 +60,7 @@ class HeldTile(Sprite):
         self.kill()
 
     def draw(self) -> None:
-        self.manager.screen.blit(self.image, self.pos)
+        self.manager.screen.blit(pygame.transform.scale_by(self.image, self.scale), self.pos)
+
+    def revive(self) -> None:
+        self.scene.sprite_manager.add(self)

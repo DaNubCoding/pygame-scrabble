@@ -40,7 +40,7 @@ class RackTile(Interactable):
         self.manager.screen.blit(transformed, VEC(self.rect.topleft) + (VEC(self.rect.size) - transformed.get_size()) // 2)
 
     def on_click(self) -> None:
-        HeldTile(self.scene, self.rect.topleft, self)
+        HeldTile(self.scene, self.rect.topleft, self).scale = 1
         self.hide()
 
     def hovering(self) -> None:

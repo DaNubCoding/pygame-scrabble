@@ -50,6 +50,8 @@ class DroppedTile(Interactable):
         self.manager.screen.blit(self.image, self.rect)
 
     def on_click(self) -> None:
+        self.scene.board[self.board_pos] = None
+
         self.held_tile.offset = self.manager.mouse_pos - self.rect.topleft
         self.held_tile.scale = 0.8
         self.held_tile.revive()

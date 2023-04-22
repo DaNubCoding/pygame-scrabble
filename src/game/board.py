@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Generator
+from typing import Optional
 from pygame.locals import *
 import pygame
 
@@ -31,6 +31,12 @@ class Board(Container):
         for i in range(15):
             text_surf = AXIS_FONT.render(f"{i + 1: >2}", True, Color.AXIS_TEXT.value)
             self.manager.screen.blit(text_surf, (self.rect.left - 20, self.rect.top + 16 + i * (TILE_SIZE + TILE_MARGIN)))
+
+    def __getitem__(self, key: tuple[int, int]) -> Optional[str]:
+        return self.board[int(key[1]) - 1][int(key[0]) - 1]
+
+    def __setitem__(self, key: tuple[int, int], value: Optional[str]) -> None:
+        self.board[int(key[1]) - 1][int(key[0]) - 1] = value
 
 class BoardTile(Element):
     def __init__(self, scene: Scene, board: Board, pos: tuple[int, int]) -> None:

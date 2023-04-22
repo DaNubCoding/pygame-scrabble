@@ -36,8 +36,12 @@ class HeldTile(Sprite):
         self.board_pos = ceilvec((self.manager.mouse_pos - self.scene.board.rect.topleft) / (TILE_SIZE + TILE_MARGIN))
         if not 1 <= self.board_pos.x <= 15 or not 1 <= self.board_pos.y <= 15:
             self.withdraw()
-        else:
+            return
+
+        if not self.scene.board[self.board_pos]:
             self.drop_on_board()
+            return
+        self.withdraw()
 
     def drop_on_rack(self) -> None:
         self.scene.rack.children.insert(self.scene.rack.children.index(self.rack_tile), None) # Insert placeholder

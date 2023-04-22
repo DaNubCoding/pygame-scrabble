@@ -56,6 +56,14 @@ class ResetButton(ButtonType1):
         self.image = images.reset
         self.border_radius = 12
 
+    def update(self) -> None:
+        if not DroppedTile._registry:
+            self.to_reset()
+        else:
+            self.to_clear()
+
+        super().update()
+
     def to_reset(self) -> None:
         self.image = images.reset
         self.command = self.scene.reset

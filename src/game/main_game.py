@@ -103,7 +103,6 @@ class MainGame(Scene):
         for dropped_tile in DroppedTile._registry.copy():
             dropped_tile.rack_tile.unhide()
             dropped_tile.kill()
-        self.reset_button.to_reset()
 
     def reorder_rack(self, children: list[RackTile] = None) -> None:
         if children:

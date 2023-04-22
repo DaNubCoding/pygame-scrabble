@@ -33,7 +33,6 @@ class DroppedTile(Interactable):
         self.board_pos = board_pos
 
         self.scene.board.board[int(board_pos.y) - 1][int(board_pos.x) - 1] = self.text
-        self.scene.reset_button.to_clear()
 
     @cached_property
     def image(self) -> pygame.SurfaceType:

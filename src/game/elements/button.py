@@ -1,8 +1,8 @@
 from typing import Callable
 import pygame
 
-from src.common.constants import VEC, Color, OPTIONS_BUTTON_FONT
 from src.game.elements.interactable import Interactable
+from src.common.constants import VEC, Color
 from src.management.scene import Scene
 
 class Button(Interactable):

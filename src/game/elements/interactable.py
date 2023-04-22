@@ -1,5 +1,5 @@
-from src.management.scene import Scene
 from src.management.element import Element
+from src.management.scene import Scene
 
 class Interactable(Element):
     def __init__(self, scene: Scene, rect: tuple[float, float, float, float]) -> None:

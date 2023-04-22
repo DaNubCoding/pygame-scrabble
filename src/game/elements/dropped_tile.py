@@ -11,8 +11,6 @@ import pygame
 
 from src.common.constants import VEC, Color, TILE_SIZE, DROPPED_TILE_FONT
 from src.game.elements.interactable import Interactable
-from src.management.sprite import Sprite, Layers
-from src.management.element import Element
 from src.management.scene import Scene
 
 class DroppedTile(Interactable):

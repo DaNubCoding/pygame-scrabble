@@ -33,6 +33,9 @@ class Client:
         except ConnectionAbortedError:
             self.quit_queue.put(True)
             print("Connection closed.")
+        except ConnectionResetError:
+            self.quit_queue.put(True)
+            print("Connection closed due to the other player disconnecting.")
         else:
             message = pickle.loads(pickled)
             self.data_queue.put(message)
@@ -43,6 +46,10 @@ class Client:
         while self.quit_queue.empty():
             self.receive()
         print("Receive thread ended.")
+
+    @property
+    def alive(self) -> bool:
+        return self.quit_queue.empty()
 
     @property
     def has_data(self) -> bool:

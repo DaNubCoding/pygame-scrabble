@@ -70,6 +70,9 @@ class GameManager:
             self.window_changing = True
             self.dt = 0
 
+        if not self.client.alive:
+            raise AbortGame
+
     def quit(self) -> None:
         self.client.disconnect()
         pygame.quit()

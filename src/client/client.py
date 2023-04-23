@@ -31,6 +31,7 @@ class Client:
         try:
             pickled = self.socket.recv(1024)
         except ConnectionAbortedError:
+            self.quit_queue.put(True)
             print("Connection closed.")
         else:
             message = pickle.loads(pickled)
@@ -44,8 +45,4 @@ class Client:
         print("Receive thread ended.")
 
     def disconnect(self) -> None:
-        print("Exiting receive thread...")
-        self.quit_queue.put(True)
-        self.receive_thread.join(timeout=0.2)
-        print("Receive thread has exited.")
         self.socket.close()

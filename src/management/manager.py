@@ -34,12 +34,6 @@ class GameManager:
         self.client = Client(self)
 
     def run(self) -> None:
-        try:
-            self._run()
-        finally:
-            self.quit()
-
-    def _run(self) -> None:
         running = True
 
         while running:
@@ -53,6 +47,8 @@ class GameManager:
                 running = False
 
             pygame.display.flip()
+
+        self.quit()
 
     def update(self) -> None:
         self.dt = self.clock.tick_busy_loop(FPS) * 0.001

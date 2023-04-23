@@ -44,5 +44,13 @@ class Client:
             self.receive()
         print("Receive thread ended.")
 
+    @property
+    def has_data(self) -> bool:
+        return not self.data_queue.empty()
+
+    def get_data(self) -> Any:
+        return self.data_queue.get()
+
     def disconnect(self) -> None:
+        print("Closing socket...")
         self.socket.close()

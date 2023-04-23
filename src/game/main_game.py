@@ -4,6 +4,7 @@ from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUT
 from src.game.elements.button import ButtonType1, ShuffleButton, ResetButton
 from src.game.elements.container import Container, Spacer
 from src.game.elements.dropped_tile import DroppedTile
+from src.game.elements.placed_tile import PlacedTile
 from src.game.elements.rack_tile import RackTile
 from src.management.element import Style
 from src.management.scene import Scene
@@ -120,6 +121,11 @@ class MainGame(Scene):
 
     def update(self) -> None:
         super().update()
+
+        if not self.manager.client.has_data: return
+        new_tiles: dict[tuple[int, int], str] = self.manager.client.get_data()
+        for board_pos, letter in new_tiles.items():
+            PlacedTile(self, VEC(board_pos), letter)
 
     def draw(self) -> None:
         self.manager.screen.fill(Color.BG.value)

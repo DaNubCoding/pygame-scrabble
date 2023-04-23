@@ -55,8 +55,7 @@ class HeldTile(Sprite):
         self.scene.reorder_rack()
 
     def drop_on_board(self) -> None:
-        pos = self.board_pos * (TILE_SIZE + TILE_MARGIN) - VEC(TILE_MARGIN, TILE_MARGIN) * 2
-        DroppedTile(self.scene, self.board_pos, pos, self, self.rack_tile)
+        DroppedTile(self.scene, self.board_pos, self, self.rack_tile)
         self.kill()
 
     def withdraw(self) -> None:

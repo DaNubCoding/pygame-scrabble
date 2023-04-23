@@ -6,6 +6,7 @@ import sys
 from src.common.constants import VEC, FPS, SIZE
 from src.game.main_game import MainGame
 from src.management.scene import Scene
+from src.client.client import Client
 
 class AbortScene(Exception):
     def __str__(self):
@@ -30,7 +31,15 @@ class GameManager:
         self.scene = MainGame(self, None)
         self.scene.setup()
 
+        self.client = Client(self)
+
     def run(self) -> None:
+        try:
+            self._run()
+        finally:
+            self.quit()
+
+    def _run(self) -> None:
         running = True
 
         while running:
@@ -44,9 +53,6 @@ class GameManager:
                 running = False
 
             pygame.display.flip()
-
-        pygame.quit()
-        sys.exit()
 
     def update(self) -> None:
         self.dt = self.clock.tick_busy_loop(FPS) * 0.001
@@ -67,6 +73,11 @@ class GameManager:
         if WINDOWRESIZED in self.events or WINDOWMOVED in self.events:
             self.window_changing = True
             self.dt = 0
+
+    def quit(self) -> None:
+        self.client.disconnect()
+        pygame.quit()
+        sys.exit()
 
     def new_scene(self, scene_class: str) -> None:
         self.scene = self.Scenes[scene_class].value(self, self.scene)

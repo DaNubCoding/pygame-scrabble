@@ -7,6 +7,7 @@ from src.game.elements.dropped_tile import DroppedTile
 from src.game.elements.rack_tile import RackTile
 from src.management.element import Style
 from src.management.scene import Scene
+from src.common.utils import inttup
 import src.common.images as images
 from src.game.board import Board
 
@@ -78,7 +79,7 @@ class MainGame(Scene):
             border_radius = 9,
         )
 
-        cont.add_children(ele := ButtonType1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("submit")))
+        cont.add_children(ele := ButtonType1(self, ("$ + 15p", 0, "$", "100%"), self.submit))
         ele.setup(
             text = "Submit",
             font = OPTIONS_BUTTON_FONT,
@@ -110,6 +111,12 @@ class MainGame(Scene):
 
         for child in self.rack.children:
             child.parse_rect()
+
+    def submit(self) -> None:
+        data = {}
+        for dropped_tile in DroppedTile._registry:
+            data[inttup(dropped_tile.board_pos)] = dropped_tile.text
+        self.manager.client.send(data)
 
     def update(self) -> None:
         super().update()

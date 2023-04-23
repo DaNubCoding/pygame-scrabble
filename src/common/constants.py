@@ -3,6 +3,10 @@ import pygame
 
 VEC = pygame.math.Vector2
 
+IP = "192.168.0.90"
+PORT = 1200
+ADDRESS = (IP, PORT)
+
 FPS = 60
 WIDTH, HEIGHT = SIZE = 800, 1000
 HSIZE = (WIDTH // 2, HEIGHT // 2)

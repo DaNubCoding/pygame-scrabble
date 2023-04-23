@@ -22,6 +22,7 @@ class DroppedTile(Interactable):
 
         self.held_tile = held_tile
         self.rack_tile = rack_tile
+        self.text = self.rack_tile.text
         self.setup(
             text = rack_tile.text,
             bg_color = Color.DROPPED_TILE.value,

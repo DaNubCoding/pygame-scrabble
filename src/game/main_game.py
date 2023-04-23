@@ -115,8 +115,10 @@ class MainGame(Scene):
 
     def submit(self) -> None:
         data = {}
-        for dropped_tile in DroppedTile._registry:
+        for dropped_tile in DroppedTile._registry.copy():
             data[inttup(dropped_tile.board_pos)] = dropped_tile.text
+            PlacedTile(self, dropped_tile.board_pos, dropped_tile.text)
+            dropped_tile.kill()
         self.manager.client.send(data)
 
     def update(self) -> None:

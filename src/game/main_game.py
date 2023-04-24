@@ -24,7 +24,8 @@ class MainGame(Scene):
             idle_color = Color.RACK_BUTTON_IDLE.value,
             hover_color = Color.RACK_BUTTON_HOVER.value,
             click_color = Color.RACK_BUTTON_CLICK.value,
-            fg_color = (0, 0, 0),
+            idle_fg_color = (0, 0, 0),
+            locked_bg_color = Color.RACK_BUTTON_HOVER.value,
             font = OPTIONS_BUTTON_FONT,
         )
 
@@ -65,28 +66,33 @@ class MainGame(Scene):
             border_radius = 9,
         )
 
-        cont.add_children(ele := ButtonType1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("skip")))
-        ele.setup(
+        self.skip_button = ButtonType1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("skip"))
+        cont.add_children(self.skip_button)
+        self.skip_button.setup(
             **self.rack_button_style,
             text = "Skip",
             border_radius = 9,
         )
 
-        cont.add_children(ele := ButtonType1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("swap")))
-        ele.setup(
+        self.swap_button = ButtonType1(self, ("$ + 15p", 0, "$", "100%"), lambda: print("swap"))
+        cont.add_children(self.swap_button)
+        self.swap_button.setup(
             **self.rack_button_style,
             text = "Swap",
             border_radius = 9,
         )
 
-        cont.add_children(ele := ButtonType1(self, ("$ + 15p", 0, "$", "100%"), self.submit))
-        ele.setup(
+        self.submit_button = ButtonType1(self, ("$ + 15p", 0, "$", "100%"), self.submit)
+        cont.add_children(self.submit_button)
+        self.submit_button.setup(
             text = "Submit",
             font = OPTIONS_BUTTON_FONT,
-            fg_color = (255, 255, 255),
+            idle_fg_color = (255, 255, 255),
             idle_color = Color.SUBMIT_BUTTON_IDLE.value,
             hover_color = Color.SUBMIT_BUTTON_HOVER.value,
             click_color = Color.SUBMIT_BUTTON_CLICK.value,
+            locked_bg_color = Color.SUBMIT_BUTTON_LOCKED_BG.value,
+            locked_fg_color = Color.SUBMIT_BUTTON_LOCKED_FG.value,
             border_radius = 9,
         )
 
@@ -128,6 +134,8 @@ class MainGame(Scene):
 
     def update(self) -> None:
         super().update()
+
+        self.skip_button.locked = self.swap_button.locked = self.submit_button.locked = not self.turn
 
         if not self.manager.client.has_messages: return
         message = self.manager.client.get_message()

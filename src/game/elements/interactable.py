@@ -13,7 +13,10 @@ class Interactable(Element):
         self.locked = False
 
     def update(self) -> None:
-        if self.locked: return
+        if self.locked:
+            self.bg_color = getattr(self, "locked_bg_color", self.bg_color)
+            self.fg_color = getattr(self, "locked_fg_color", self.fg_color)
+            return
 
         self._hover = self.rect.collidepoint(self.manager.mouse_pos)
         self._click = self._hover and self.manager.mouse_state[0] and not self._clicked_outside
@@ -49,6 +52,7 @@ class Interactable(Element):
         # This prevents the mouse being able to hold down click and drag over the interactable to activate it
         self._clicked_outside = self.manager.mouse_state[0]
         self.bg_color = getattr(self, "idle_color", self.bg_color)
+        self.fg_color = getattr(self, "idle_fg_color", self.fg_color)
 
         if self._hover_flag: return
         self.off_hover()

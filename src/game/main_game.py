@@ -117,6 +117,8 @@ class MainGame(Scene):
             PlacedTile(self, dropped_tile.board_pos, dropped_tile.text)
             dropped_tile.rack_tile.kill()
             dropped_tile.kill()
+
+        if not tiles: return
         self.manager.client.send({"type": MessageType.PLACE.name, "message": tiles})
 
     def update(self) -> None:

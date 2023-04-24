@@ -1,4 +1,4 @@
-from random import choice, shuffle
+from random import shuffle
 
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUTTON_FONT
 from src.game.elements.button import ButtonType1, ShuffleButton, ResetButton

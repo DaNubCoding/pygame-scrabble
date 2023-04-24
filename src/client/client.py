@@ -3,10 +3,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from src.management.manager import GameManager
 
-from collections import namedtuple
 from threading import Thread
 from enum import Enum, auto
-from typing import Literal
 from queue import Queue
 import socket as sock
 import pickle

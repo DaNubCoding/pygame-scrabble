@@ -5,11 +5,11 @@ from src.game.elements.button import ButtonType1, ShuffleButton, ResetButton
 from src.game.elements.container import Container, Spacer
 from src.game.elements.dropped_tile import DroppedTile
 from src.game.elements.placed_tile import PlacedTile
+from src.client.client import MessageType, Message
 from src.game.elements.rack_tile import RackTile
 from src.management.element import Style
 from src.management.scene import Scene
 from src.common.utils import inttup
-import src.common.images as images
 from src.game.board import Board
 
 class MainGame(Scene):
@@ -114,19 +114,24 @@ class MainGame(Scene):
             child.parse_rect()
 
     def submit(self) -> None:
-        data = {}
+        tiles = {}
         for dropped_tile in DroppedTile._registry.copy():
-            data[inttup(dropped_tile.board_pos)] = dropped_tile.text
+            tiles[inttup(dropped_tile.board_pos)] = dropped_tile.text
             PlacedTile(self, dropped_tile.board_pos, dropped_tile.text)
             dropped_tile.kill()
-        self.manager.client.send(data)
+        self.manager.client.send(Message(MessageType.PLACE, tiles))
 
     def update(self) -> None:
         super().update()
 
-        if not self.manager.client.has_data: return
-        new_tiles: dict[tuple[int, int], str] = self.manager.client.get_data()
-        for board_pos, letter in new_tiles.items():
+        if not self.manager.client.has_messages: return
+        message = self.manager.client.get_message()
+        message_handler = getattr(self, f"message_type_{message.type.name.lower()}")
+        message_handler(message.message)
+
+    # The following methods with the prefix "message_type_" are called based on the name of the type of message received
+    def message_type_place(self, tiles: dict[tuple[int, int], str]) -> None:
+        for board_pos, letter in tiles.items():
             PlacedTile(self, VEC(board_pos), letter)
 
     def draw(self) -> None:

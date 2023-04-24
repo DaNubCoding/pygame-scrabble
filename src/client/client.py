@@ -3,9 +3,11 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from src.management.manager import GameManager
 
+from dataclasses import dataclass
+from typing import Any, Optional
 from threading import Thread
+from enum import Enum, auto
 from queue import Queue
-from typing import Any
 import socket as sock
 import pickle
 
@@ -18,18 +20,18 @@ class Client:
         self.socket.connect(ADDRESS)
 
         self.quit_queue = Queue(maxsize=1)
-        self.data_queue = Queue()
+        self.message_queue = Queue()
         self.receive_thread = Thread(target=self.forever_receive)
         self.receive_thread.start()
 
-    def send(self, message: Any) -> None:
-        print(f"Sending data: {message}")
+    def send(self, message: Message) -> None:
+        print(f"[Sending data] Type '{message.type}': {message.message}")
         pickled = pickle.dumps(message)
         self.socket.send(pickled)
 
     def receive(self) -> None:
         try:
-            pickled = self.socket.recv(1024)
+            pickled_data = self.socket.recv(1024)
         except ConnectionAbortedError:
             self.quit_queue.put(True)
             print("Connection closed.")
@@ -37,9 +39,9 @@ class Client:
             self.quit_queue.put(True)
             print("Connection closed due to the other player disconnecting.")
         else:
-            message = pickle.loads(pickled)
-            self.data_queue.put(message)
-            print(f"Data received: {message}")
+            message = pickle.loads(pickled_data)
+            self.message_queue.put(message)
+            print(f"[Data received] Type '{message.type}': {message.message}")
 
     def forever_receive(self) -> None:
         print("Started receive thread.")
@@ -52,12 +54,20 @@ class Client:
         return self.quit_queue.empty()
 
     @property
-    def has_data(self) -> bool:
-        return not self.data_queue.empty()
+    def has_messages(self) -> bool:
+        return not self.message_queue.empty()
 
-    def get_data(self) -> Any:
-        return self.data_queue.get()
+    def get_message(self) -> Message:
+        return self.message_queue.get()
 
     def disconnect(self) -> None:
         print("Closing socket...")
         self.socket.close()
+
+@dataclass
+class Message:
+    type: MessageType
+    message: Any
+
+class MessageType(Enum):
+    PLACE = auto()

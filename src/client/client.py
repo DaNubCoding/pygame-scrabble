@@ -64,4 +64,4 @@ class Client:
 
 class MessageType(Enum):
     PLACE = auto()
-    ADD_TILES = auto()
+    REPLENISH = auto()

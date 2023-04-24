@@ -136,7 +136,7 @@ class MainGame(Scene):
         for board_pos, letter in tiles.items():
             PlacedTile(self, VEC(board_pos), letter)
 
-    def message_type_add_tiles(self, tiles: list[str]) -> None:
+    def message_type_replenish(self, tiles: list[str]) -> None:
         self.reorder_rack()
         for letter in tiles:
             self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), letter))

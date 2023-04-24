@@ -4,6 +4,7 @@ if TYPE_CHECKING:
     from src.game.elements.dropped_tile import DroppedTile
     from src.game.elements.rack_tile import RackTile
 
+from pygame.locals import *
 from math import ceil
 import pygame
 
@@ -25,6 +26,7 @@ class HeldTile(Sprite):
     def update(self) -> None:
         if self.manager.mouse_state[0]:
             self.pos = self.manager.mouse_pos - self.offset
+            self.board_pos = ceilvec((self.manager.mouse_pos - self.scene.board.rect.topleft) / (TILE_SIZE + TILE_MARGIN))
         else:
             self.drop()
 
@@ -33,7 +35,6 @@ class HeldTile(Sprite):
         if rect.left < m_pos.x < rect.right and rect.top < m_pos.y < rect.bottom:
             self.drop_on_rack()
 
-        self.board_pos = ceilvec((self.manager.mouse_pos - self.scene.board.rect.topleft) / (TILE_SIZE + TILE_MARGIN))
         if not 1 <= self.board_pos.x <= 15 or not 1 <= self.board_pos.y <= 15:
             self.withdraw()
             return
@@ -41,6 +42,7 @@ class HeldTile(Sprite):
         if not self.scene.board[self.board_pos]:
             self.drop_on_board()
             return
+
         self.withdraw()
 
     def drop_on_rack(self) -> None:
@@ -63,6 +65,11 @@ class HeldTile(Sprite):
         self.kill()
 
     def draw(self) -> None:
+        if 1 <= self.board_pos.x <= 15 and 1 <= self.board_pos.y <= 15:
+            surf = pygame.Surface((TILE_SIZE, TILE_SIZE), SRCALPHA)
+            pygame.draw.rect(surf, (0, 0, 0), (0, 0, TILE_SIZE, TILE_SIZE), 0, 7)
+            surf.set_alpha(140)
+            self.manager.screen.blit(surf, VEC(self.board_pos) * (TILE_SIZE + TILE_MARGIN) - VEC(TILE_MARGIN, TILE_MARGIN) * 2)
         self.manager.screen.blit(pygame.transform.scale_by(self.image, self.scale), self.pos)
 
     def revive(self) -> None:

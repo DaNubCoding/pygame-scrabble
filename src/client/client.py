@@ -62,6 +62,8 @@ class Client:
         print("Closing socket...")
         self.socket.close()
 
+# All types of messages that can be sent to or received from the server
 class MessageType(Enum):
     PLACE = auto()
     REPLENISH = auto()
+    TURN = auto()

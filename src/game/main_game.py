@@ -1,4 +1,5 @@
 from random import shuffle
+from typing import Literal
 
 from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, OPTIONS_BUTTON_FONT
 from src.game.elements.button import ButtonType1, ShuffleButton, ResetButton
@@ -17,6 +18,7 @@ class MainGame(Scene):
         super().setup()
 
         self.board = Board(self)
+        self.turn = False
 
         self.rack_button_style = Style(
             idle_color = Color.RACK_BUTTON_IDLE.value,
@@ -111,6 +113,8 @@ class MainGame(Scene):
             child.parse_rect()
 
     def submit(self) -> None:
+        if not self.turn: return
+
         tiles = {}
         for dropped_tile in DroppedTile._registry.copy():
             tiles[inttup(dropped_tile.board_pos)] = dropped_tile.text
@@ -118,6 +122,7 @@ class MainGame(Scene):
             dropped_tile.rack_tile.kill()
             dropped_tile.kill()
 
+        self.turn = False
         if not tiles: return
         self.manager.client.send({"type": MessageType.PLACE.name, "message": tiles})
 
@@ -140,6 +145,10 @@ class MainGame(Scene):
         self.reorder_rack()
         for letter in tiles:
             self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), letter))
+
+    def message_type_turn(self, _: Literal[None]):
+        print("MY TURN!")
+        self.turn = True
 
     def draw(self) -> None:
         self.manager.screen.fill(Color.BG.value)

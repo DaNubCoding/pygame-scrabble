@@ -5,8 +5,8 @@ from src.game.elements.button import ButtonType1, ShuffleButton, ResetButton
 from src.game.elements.container import Container, Spacer
 from src.game.elements.dropped_tile import DroppedTile
 from src.game.elements.placed_tile import PlacedTile
-from src.client.client import MessageType, Message
 from src.game.elements.rack_tile import RackTile
+from src.client.client import MessageType
 from src.management.element import Style
 from src.management.scene import Scene
 from src.common.utils import inttup
@@ -17,7 +17,6 @@ class MainGame(Scene):
         super().setup()
 
         self.board = Board(self)
-        self.tile_bag = list("EEEEEEEEEEEEAAAAAAAAAIIIIIIIIIOOOOOOOONNNNNNRRRRRRTTTTTTLLLLSSSSUUUUDDDDGGGBBCCMMPPFFHHVVWWYYKJXQZ")
 
         self.rack_button_style = Style(
             idle_color = Color.RACK_BUTTON_IDLE.value,
@@ -29,8 +28,6 @@ class MainGame(Scene):
 
         self.__build_rack_container()
         self.rack.add_children(Spacer(self, (0, 0, 2, 0)))
-        for _ in range(7):
-            self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), choice(self.tile_bag)))
 
         self.__build_options_container()
 
@@ -118,21 +115,29 @@ class MainGame(Scene):
         for dropped_tile in DroppedTile._registry.copy():
             tiles[inttup(dropped_tile.board_pos)] = dropped_tile.text
             PlacedTile(self, dropped_tile.board_pos, dropped_tile.text)
+            dropped_tile.rack_tile.kill()
             dropped_tile.kill()
-        self.manager.client.send(Message(MessageType.PLACE, tiles))
+        self.manager.client.send({"type": MessageType.PLACE.name, "message": tiles})
 
     def update(self) -> None:
         super().update()
 
         if not self.manager.client.has_messages: return
         message = self.manager.client.get_message()
-        message_handler = getattr(self, f"message_type_{message.type.name.lower()}")
-        message_handler(message.message)
+        message_handler = getattr(self, f"message_type_{message['type'].lower()}")
+        print(f"Processing message of type {message['type']}.")
+        message_handler(message["message"])
 
     # The following methods with the prefix "message_type_" are called based on the name of the type of message received
+
     def message_type_place(self, tiles: dict[tuple[int, int], str]) -> None:
         for board_pos, letter in tiles.items():
             PlacedTile(self, VEC(board_pos), letter)
+
+    def message_type_add_tiles(self, tiles: list[str]) -> None:
+        self.reorder_rack()
+        for letter in tiles:
+            self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), letter))
 
     def draw(self) -> None:
         self.manager.screen.fill(Color.BG.value)

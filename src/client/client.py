@@ -3,10 +3,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from src.management.manager import GameManager
 
-from dataclasses import dataclass
-from typing import Any, Optional
+from collections import namedtuple
 from threading import Thread
 from enum import Enum, auto
+from typing import Literal
 from queue import Queue
 import socket as sock
 import pickle
@@ -24,8 +24,8 @@ class Client:
         self.receive_thread = Thread(target=self.forever_receive)
         self.receive_thread.start()
 
-    def send(self, message: Message) -> None:
-        print(f"[Sending data] Type '{message.type}': {message.message}")
+    def send(self, message: dict) -> None:
+        print(f"[Sending data] Type '{message['type']}': {message['message']}")
         pickled = pickle.dumps(message)
         self.socket.send(pickled)
 
@@ -41,7 +41,7 @@ class Client:
         else:
             message = pickle.loads(pickled_data)
             self.message_queue.put(message)
-            print(f"[Data received] Type '{message.type}': {message.message}")
+            print(f"[Data received] Type '{message['type']}': {message['message']}")
 
     def forever_receive(self) -> None:
         print("Started receive thread.")
@@ -57,17 +57,13 @@ class Client:
     def has_messages(self) -> bool:
         return not self.message_queue.empty()
 
-    def get_message(self) -> Message:
+    def get_message(self) -> dict:
         return self.message_queue.get()
 
     def disconnect(self) -> None:
         print("Closing socket...")
         self.socket.close()
 
-@dataclass
-class Message:
-    type: MessageType
-    message: Any
-
 class MessageType(Enum):
     PLACE = auto()
+    ADD_TILES = auto()

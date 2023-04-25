@@ -121,14 +121,8 @@ class MainGame(Scene):
     def submit(self) -> None:
         if not self.turn: return
 
-        tiles = {}
-        for dropped_tile in DroppedTile._registry.copy():
-            tiles[inttup(dropped_tile.board_pos)] = dropped_tile.text
-            PlacedTile(self, dropped_tile.board_pos, dropped_tile.text)
-            dropped_tile.rack_tile.kill()
-            dropped_tile.kill()
+        tiles = {inttup(dropped_tile.board_pos): dropped_tile.text for dropped_tile in DroppedTile._registry}
 
-        self.turn = False
         if not tiles: return
         self.manager.client.send({"type": MessageType.PLACE.name, "message": tiles})
 
@@ -149,14 +143,28 @@ class MainGame(Scene):
         for board_pos, letter in tiles.items():
             PlacedTile(self, VEC(board_pos), letter)
 
-    def message_type_replenish(self, tiles: list[str]) -> None:
+    def message_type_replenish(self, new_tiles: list[str]) -> None:
+        # Settle tiles since a replenish message = valid move
+        tiles = {}
+        for dropped_tile in DroppedTile._registry.copy():
+            tiles[inttup(dropped_tile.board_pos)] = dropped_tile.text
+            PlacedTile(self, dropped_tile.board_pos, dropped_tile.text)
+            dropped_tile.rack_tile.kill()
+            dropped_tile.kill()
+
+        self.turn = False
+
         self.reorder_rack()
-        for letter in tiles:
+        for letter in new_tiles:
             self.rack.add_children(RackTile(self, ("$ + 9p", 10, ..., "100% - 20p"), letter))
 
-    def message_type_turn(self, _: Literal[None]):
+    def message_type_turn(self, _: Literal[None]) -> None:
         print("MY TURN!")
         self.turn = True
+
+    def message_type_invalid(self, _: Literal[None]) -> None:
+        print("INVALID MOVE!")
+        self.clear()
 
     def draw(self) -> None:
         self.manager.screen.fill(Color.BG.value)

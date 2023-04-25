@@ -3,7 +3,7 @@ import pygame
 
 VEC = pygame.math.Vector2
 
-IP = "10.242.101.221" # "192.168.0.90"
+IP = "localhost" # "10.242.101.221" # "192.168.0.90"
 PORT = 1200
 ADDRESS = (IP, PORT)
 

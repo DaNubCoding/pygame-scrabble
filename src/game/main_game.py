@@ -162,8 +162,8 @@ class MainGame(Scene):
         print("MY TURN!")
         self.turn = True
 
-    def message_type_invalid(self, _: Literal[None]) -> None:
-        print("INVALID MOVE!")
+    def message_type_invalid(self, reason: str) -> None:
+        print(f"Invalid! {reason}")
         self.clear()
 
     def draw(self) -> None:

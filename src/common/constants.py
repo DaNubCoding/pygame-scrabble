@@ -105,10 +105,21 @@ BONUS_LOCATIONS = {
     (1, 8): Color.TW,
 }
 
+LETTER_POINTS = {
+    "A": 1, "E": 1, "I": 1, "O": 1, "U": 1, "L": 1, "N": 1, "S": 1, "T": 1, "R": 1,
+    "D": 2, "G": 2,
+    "B": 3, "C": 3, "M": 3, "P": 3,
+    "F": 4, "H": 4, "V": 4, "W": 4, "Y": 4,
+    "K": 5,
+    "J": 8, "X": 8,
+    "Q": 10, "Z": 10,
+}
+
 # interextralight inter intermedium interregular intersemibold interthin interblack interextrabold
 pygame.font.init()
 BONUS_FONT = pygame.font.SysFont("interextrabold", 15)
 AXIS_FONT = pygame.font.SysFont("intersemibold", 11)
 OPTIONS_BUTTON_FONT = pygame.font.SysFont("intersemibold", 18)
 RACK_TILE_FONT = pygame.font.SysFont("interextrabold", 35)
+RACK_TILE_SUBFONT = pygame.font.SysFont("interextrabold", 12)
 DROPPED_TILE_FONT = PLACED_TILE_FONT = pygame.font.SysFont("interextrabold", 30)

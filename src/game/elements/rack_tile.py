@@ -3,7 +3,7 @@ from pygame.math import Vector3
 from pygame.locals import *
 import pygame
 
-from src.common.constants import VEC, Color, RACK_TILE_FONT
+from src.common.constants import VEC, Color, LETTER_POINTS, RACK_TILE_FONT, RACK_TILE_SUBFONT
 from src.game.elements.interactable import Interactable
 from src.game.held_tile import HeldTile
 from src.management.scene import Scene
@@ -16,6 +16,7 @@ class RackTile(Interactable):
         self.edge_color = Color.RACK_TILE_EDGE.value
         self.fg_color = (0, 0, 0)
         self.font = RACK_TILE_FONT
+        self.subfont = RACK_TILE_SUBFONT
         self.border_radius = 9
 
         self.scale = 1
@@ -32,6 +33,9 @@ class RackTile(Interactable):
         image.blit(text_surf, (VEC(self.rect.size) - text_surf.get_size()) // 2 + (1, 1))
         text_surf = self.font.render(self.text, True, self.fg_color)
         image.blit(text_surf, (VEC(self.rect.size) - text_surf.get_size()) // 2)
+
+        text_surf = self.subfont.render(str(LETTER_POINTS[self.text]), True, self.fg_color)
+        image.blit(text_surf, VEC(image.get_size()) - VEC(text_surf.get_size()) - (5, 5))
 
         return image
 

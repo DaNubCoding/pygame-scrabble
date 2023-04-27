@@ -58,7 +58,7 @@ class GameManager:
             self.dt = 0
             self.window_changing = False
 
-        pygame.display.set_caption(f"Pygame Scrabble | FPS: {round(self.clock.get_fps())}")
+        pygame.display.set_caption(f"Pygame Scrabble | FPS: {round(self.clock.get_fps())} | Score: {self.scene.score}")
 
         self.events = {event.type: event for event in pygame.event.get()}
         self.mouse_state = pygame.mouse.get_pressed()

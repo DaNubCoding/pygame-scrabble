@@ -68,3 +68,4 @@ class MessageType(Enum):
     REPLENISH = auto()
     TURN = auto()
     INVALID = auto()
+    POINTS = auto()

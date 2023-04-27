@@ -19,6 +19,7 @@ class MainGame(Scene):
 
         self.board = Board(self)
         self.turn = False
+        self.score = 0
 
         self.rack_button_style = Style(
             idle_color = Color.RACK_BUTTON_IDLE.value,
@@ -165,6 +166,10 @@ class MainGame(Scene):
     def message_type_invalid(self, reason: str) -> None:
         print(f"Invalid! {reason}")
         self.clear()
+
+    def message_type_points(self, points: int) -> None:
+        self.score += points
+        print(f"{points} points received! Score now: {self.score}")
 
     def draw(self) -> None:
         self.manager.screen.fill(Color.BG.value)

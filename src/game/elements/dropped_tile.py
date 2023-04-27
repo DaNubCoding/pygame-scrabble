@@ -9,7 +9,7 @@ from pygame.math import Vector3
 from pygame.locals import *
 import pygame
 
-from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, DROPPED_TILE_FONT
+from src.common.constants import VEC, Color, TILE_SIZE, TILE_MARGIN, DROPPED_TILE_FONT, DROPPED_TILE_SUBFONT, LETTER_POINTS
 from src.game.elements.interactable import Interactable
 from src.management.scene import Scene
 
@@ -31,6 +31,7 @@ class DroppedTile(Interactable):
             edge_color = Color.DROPPED_TILE_EDGE.value,
             border_radius = 7,
             font = DROPPED_TILE_FONT,
+            subfont = DROPPED_TILE_SUBFONT,
         )
         self.board_pos = board_pos
 
@@ -48,6 +49,9 @@ class DroppedTile(Interactable):
         image.blit(text_surf, (VEC(self.rect.size) - text_surf.get_size()) // 2 + (1, 1))
         text_surf = self.font.render(self.text, True, self.fg_color)
         image.blit(text_surf, (VEC(self.rect.size) - text_surf.get_size()) // 2)
+
+        text_surf = self.subfont.render(str(LETTER_POINTS[self.text]), True, self.fg_color)
+        image.blit(text_surf, VEC(image.get_size()) - VEC(text_surf.get_size()) - (3, 3))
 
         return image
 
